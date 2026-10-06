@@ -1,0 +1,14 @@
+body { font-family: Arial, sans-serif; padding: 24px; }
+canvas {
+  border: 1px solid #000;
+  background: #fff;
+  touch-action: none;
+  display: block;
+}
+button { margin: 12px 8px 20px 0; padding: 8px 14px; }
+.preview {
+  width: 500px;
+  height: 180px;
+  border: 1px solid #aaa;
+  background: #f8f8f8;
+}

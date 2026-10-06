@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Co-browsing - Kiểm tra thuộc tính input</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a class="back" href="../index.html">← Menu</a>
+  <h1>Co-browsing - Kiểm tra thuộc tính input (#7598 Yêu cầu chức năng 1-3)</h1>
+  <p>Mở trang này trên trình duyệt phía host và chia sẻ thao tác màn hình (画面操作共有) với tab này. Extension: <span id="extension-status">Đang kiểm tra…</span></p>
+</header>
+
+<main>
+  <div>
+    <!-- A. Loại bàn phím -->
+    <form id="section-a" novalidate>
+      <section>
+        <h2>A. Loại bàn phím (type / inputmode / enterkeyhint)</h2>
+        <p class="note">Trên máy guest (iPhone / iPad / Android), chạm vào từng ô và kiểm tra bàn phím được hiển thị.</p>
+
+        <div class="field" data-case="A1">
+          <label for="a1"><span class="case">A1</span>Văn bản</label>
+          <input id="a1" name="a1" type="text">
+        </div>
+        <div class="field" data-case="A2">
+          <label for="a2"><span class="case">A2</span>Email</label>
+          <input id="a2" name="a2" type="email">
+        </div>
+        <div class="field" data-case="A3">
+          <label for="a3"><span class="case">A3</span>Số nguyên</label>
+          <input id="a3" name="a3" type="number" min="0">
+        </div>
+        <div class="field" data-case="A4">
+          <label for="a4"><span class="case">A4</span>Số thập phân</label>
+          <input id="a4" name="a4" type="number" step="0.01" min="0">
+        </div>
+        <div class="field" data-case="A5">
+          <label for="a5"><span class="case">A5</span>Số (cho phép số âm)</label>
+          <input id="a5" name="a5" type="number" min="-10" max="10">
+        </div>
+        <div class="field" data-case="A6-1">
+          <label for="a6-1"><span class="case">A6</span>Số điện thoại</label>
+          <input id="a6-1" name="a6-1" type="tel">
+        </div>
+        <div class="field" data-case="A6-2">
+          <label for="a6-2"><span class="case">A6</span>URL</label>
+          <input id="a6-2" name="a6-2" type="url">
+        </div>
+        <div class="field" data-case="A7">
+          <label for="a7"><span class="case">A7</span>Tìm kiếm</label>
+          <input id="a7" name="a7" type="search">
+        </div>
+        <div class="field" data-case="A8">
+          <label for="a8"><span class="case">A8</span>Mật khẩu</label>
+          <input id="a8" name="a8" type="password" autocomplete="off">
+        </div>
+        <div class="field" data-case="A9-1">
+          <label for="a9-1"><span class="case">A9</span>text + inputmode=numeric</label>
+          <input id="a9-1" name="a9-1" type="text" inputmode="numeric">
+        </div>
+        <div class="field" data-case="A9-2">
+          <label for="a9-2"><span class="case">A9</span>text + inputmode=decimal</label>
+          <input id="a9-2" name="a9-2" type="text" inputmode="decimal">
+        </div>
+        <div class="field" data-case="A9-3">
+          <label for="a9-3"><span class="case">A9</span>text + inputmode=tel</label>
+          <input id="a9-3" name="a9-3" type="text" inputmode="tel">
+        </div>
+        <div class="field" data-case="A9-4">
+          <label for="a9-4"><span class="case">A9</span>text + inputmode=email</label>
+          <input id="a9-4" name="a9-4" type="text" inputmode="email">
+        </div>
+        <div class="field" data-case="A10-1">
+          <label for="a10-1"><span class="case">A10</span>enterkeyhint=next</label>
+          <input id="a10-1" name="a10-1" type="text" enterkeyhint="next">
+        </div>
+        <div class="field" data-case="A10-2">
+          <label for="a10-2"><span class="case">A10</span>enterkeyhint=send</label>
+          <input id="a10-2" name="a10-2" type="text" enterkeyhint="send">
+        </div>
+        <div class="field" data-case="A10-3">
+          <label for="a10-3"><span class="case">A10</span>enterkeyhint=go</label>
+          <input id="a10-3" name="a10-3" type="text" enterkeyhint="go">
+        </div>
+        <div class="field" data-case="A11-1">
+          <label for="a11-1"><span class="case">A11</span>autocapitalize=characters</label>
+          <input id="a11-1" name="a11-1" type="text" autocapitalize="characters">
+        </div>
+        <div class="field" data-case="A11-2">
+          <label for="a11-2"><span class="case">A11</span>autocapitalize=words</label>
+          <input id="a11-2" name="a11-2" type="text" autocapitalize="words">
+        </div>
+        <div class="field" data-case="A12-1">
+          <label for="a12-1"><span class="case">A12</span>Ngày (không mở ô nhập)</label>
+          <input id="a12-1" name="a12-1" type="date">
+        </div>
+        <div class="field" data-case="A12-2">
+          <label><span class="case">A12</span>Checkbox / Radio</label>
+          <div class="choices">
+            <label><input id="a12-2" name="a12-2" type="checkbox"> Đồng ý</label>
+            <label><input id="a12-3" name="a12-3" type="radio" value="1"> Có</label>
+            <label><input id="a12-4" name="a12-3" type="radio" value="0"> Không</label>
+          </div>
+        </div>
+      </section>
+    </form>
+
+    <!-- B. Kiểm soát nhập phía guest -->
+    <form id="section-b">
+      <section>
+        <h2>B. Kiểm soát nhập phía guest (maxlength / minlength / placeholder)</h2>
+        <div class="field" data-case="B1">
+          <label for="b1"><span class="case">B1</span>Tối đa 5 ký tự</label>
+          <input id="b1" name="b1" type="text" maxlength="5">
+        </div>
+        <div class="field" data-case="B2">
+          <label for="b2"><span class="case">B2/B3</span>Tối thiểu 3 ký tự</label>
+          <input id="b2" name="b2" type="text" minlength="3">
+        </div>
+        <div class="field" data-case="B4">
+          <label for="b4"><span class="case">B4</span>Placeholder</label>
+          <input id="b4" name="b4" type="text" placeholder="VD: Nguyễn Văn A">
+        </div>
+        <div class="field" data-case="B5">
+          <label for="b5"><span class="case">B5</span>Textarea (5–20 ký tự)</label>
+          <textarea id="b5" name="b5" minlength="5" maxlength="20" placeholder="Nhập yêu cầu của bạn"></textarea>
+        </div>
+        <button type="submit" class="check-button">Kiểm tra trên host (tham khảo)</button>
+      </section>
+    </form>
+
+    <!-- C. Kiểm tra bởi trình duyệt host -->
+    <form id="section-c">
+      <section>
+        <h2>C. Kiểm tra bởi trình duyệt host (message hiển thị phía guest)</h2>
+        <p class="note">Khoảng 0.5–1 giây sau khi guest nhập, message của trình duyệt host phải hiển thị dưới ô nhập phía guest. Ngôn ngữ của message theo ngôn ngữ trình duyệt host.</p>
+        <div class="field" data-case="C1">
+          <label for="c1"><span class="case">C1</span>Bắt buộc</label>
+          <input id="c1" name="c1" type="text" required>
+        </div>
+        <div class="field" data-case="C2">
+          <label for="c2"><span class="case">C2</span>3 chữ số (pattern)</label>
+          <input id="c2" name="c2" type="text" pattern="[0-9]{3}" title="3 chữ số">
+        </div>
+        <div class="field" data-case="C3">
+          <label for="c3"><span class="case">C3</span>Số từ 0 đến 100</label>
+          <input id="c3" name="c3" type="number" min="0" max="100">
+        </div>
+        <div class="field" data-case="C4">
+          <label for="c4"><span class="case">C4</span>Số theo bước 5 (step)</label>
+          <input id="c4" name="c4" type="number" min="0" step="5">
+        </div>
+        <div class="field" data-case="C5">
+          <label for="c5"><span class="case">C5</span>Định dạng email</label>
+          <input id="c5" name="c5" type="email">
+        </div>
+        <div class="field" data-case="C6">
+          <label for="c6"><span class="case">C6</span>Kiểm tra riêng của trang (chứa "NG" là lỗi)</label>
+          <input id="c6" name="c6" type="text">
+        </div>
+        <button type="submit" class="check-button">Kiểm tra trên host (tham khảo)</button>
+      </section>
+    </form>
+
+    <!-- D. Sự kiện trên màn hình host -->
+    <form id="section-d" novalidate>
+      <section>
+        <h2>D. Sự kiện trên màn hình host (input / change / keydown / iframe)</h2>
+        <div class="field" data-case="D1">
+          <label for="d1"><span class="case">D1</span>Đếm ký tự (event input)</label>
+          <input id="d1" name="d1" type="text">
+          <div class="meta">Còn lại <span id="d1-counter" class="counter">30</span> ký tự (tối đa 30, trang tự tính bằng JS)</div>
+        </div>
+        <div class="field" data-case="D2">
+          <label for="d2"><span class="case">D2</span>Viết hoa khi xác nhận (event change)</label>
+          <input id="d2" name="d2" type="text">
+          <div class="meta">Số lần event change: <span id="d2-counter" class="counter">0</span> (không tăng khi đang gõ, chỉ tăng khi guest xác nhận)</div>
+        </div>
+        <div class="field" data-case="D3">
+          <label for="d3"><span class="case">D3</span>Chỉ nhập số (chặn bằng keydown)</label>
+          <input id="d3" name="d3" type="text">
+          <div class="meta">Bàn phím của host không gõ được ký tự khác số. Dự kiến nhập từ guest sẽ không bị chặn (thuộc phạm vi không làm được).</div>
+        </div>
+        <div class="field" data-case="D4">
+          <label><span class="case">D4</span>Ô nhập trong iframe cùng origin</label>
+          <iframe id="d4-frame" title="iframe cùng origin"></iframe>
+        </div>
+      </section>
+    </form>
+
+    <!-- E. Kiểm tra regression -->
+    <form id="section-e" novalidate>
+      <section>
+        <h2>E. Kiểm tra regression (select)</h2>
+        <div class="field" data-case="E3">
+          <label for="e3"><span class="case">E3</span>Dropdown (bắt buộc)</label>
+          <select id="e3" name="e3" required>
+            <option value="">Vui lòng chọn</option>
+            <option value="1">Hà Nội</option>
+            <option value="2">TP. Hồ Chí Minh</option>
+            <option value="3">Đà Nẵng</option>
+          </select>
+        </div>
+      </section>
+    </form>
+  </div>
+
+  <aside>
+    <h2>Log sự kiện phía host</h2>
+    <div class="legend">input (xanh dương) / change (vàng) / keydown (đỏ) / click (xanh lá). Giá trị mật khẩu được che.</div>
+    <div id="log"></div>
+    <button id="clear-log" type="button">Xoá log</button>
+  </aside>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
