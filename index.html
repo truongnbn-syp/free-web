@@ -1,32 +1,32 @@
 <!doctype html>
-<html lang="vi">
+<html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trang test</title>
+  <title>テストページ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
-  <h1>Trang test</h1>
-  <p>Chọn một trang để mở.</p>
+  <h1>テストページ</h1>
+  <p>開くページを選択してください。</p>
 </header>
 
 <main>
-  <!-- Mỗi route là một thư mục chứa index.html; dùng đường dẫn tương đối để chạy được cả khi deploy dưới sub-path. -->
+  <!-- 各ルートは index.html を含むフォルダ。サブパス配下にデプロイしても動くよう相対パスを使う。 -->
   <ul>
     <li>
       <a class="route" href="input-attributes-form/index.html">
-        <h2>Co-browsing - Kiểm tra thuộc tính input</h2>
+        <h2>Co-browsing - input属性の確認</h2>
         <code>/input-attributes-form</code>
-        <p>#7598 Yêu cầu chức năng 1-3: loại bàn phím, maxlength/minlength, kiểm tra của trình duyệt host, sự kiện input/change/keydown/iframe.</p>
+        <p>#7598 機能要件 1-3: キーボードの種類、maxlength/minlength、ホストブラウザによる検証、input/change/keydown/iframe イベント。</p>
       </a>
     </li>
     <li>
       <a class="route" href="fake-ezform/index.html">
         <h2>Fake Ezform Signature</h2>
         <code>/fake-ezform</code>
-        <p>Canvas ký tên bằng pointer event; lưu nét vẽ vào state, Submit thì vẽ lại bản xem trước từ state.</p>
+        <p>pointer イベントで署名を描く canvas。ストロークを state に保存し、Submit で state からプレビューを再描画する。</p>
       </a>
     </li>
   </ul>

@@ -116,8 +116,42 @@ aside {
   border-radius: 8px;
   padding: 12px;
 }
-aside h2 { margin: 0 0 8px; font-size: 18px; }
+aside h2 { margin: 0; font-size: 18px; }
+#toggle-log {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+#toggle-log .chevron { display: inline-block; transition: transform 0.15s; }
+#toggle-log .unseen {
+  margin-left: auto;
+  padding: 0 8px;
+  border-radius: 10px;
+  background: #ffd166;
+  color: var(--log-bg);
+  font-size: 13px;
+}
+#log-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
 aside .legend { font-size: 13px; color: #9fb3c8; margin-bottom: 8px; }
+/* Collapsed: only the title bar remains, and on desktop the column shrinks to fit it */
+aside.collapsed { height: auto; min-height: 0; }
+aside.collapsed #log-body { display: none; }
+aside.collapsed #toggle-log .chevron { transform: rotate(-90deg); }
+main.log-collapsed { grid-template-columns: minmax(0, 1fr) max-content; }
 #log {
   flex: 1;
   overflow-y: auto;
@@ -139,7 +173,7 @@ aside .legend { font-size: 13px; color: #9fb3c8; margin-bottom: 8px; }
 
 /* Tablet / narrow window: one column, log docked at the bottom of the viewport */
 @media (max-width: 1024px) {
-  main {
+  main, main.log-collapsed {
     grid-template-columns: minmax(0, 1fr);
     padding-bottom: 16px;
   }

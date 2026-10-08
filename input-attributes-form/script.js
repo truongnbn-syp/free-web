@@ -1,11 +1,17 @@
 (function () {
   const MAX_LOG_LINES = 300;
   const HIDDEN_ATTRIBUTES = ['id', 'name', 'class', 'style'];
+  const LOG_COLLAPSED_KEY = 'input-attributes-form:log-collapsed';
   const logElement = document.getElementById('log');
+  const logPanel = logElement.closest('aside');
+  const toggleLogButton = document.getElementById('toggle-log');
+  const unseenElement = document.getElementById('log-unseen');
+  let logCollapsed = false;
+  let unseenCount = 0;
 
   function now() {
     const date = new Date();
-    return date.toLocaleTimeString('vi-VN', { hour12: false }) + '.' + String(date.getMilliseconds()).padStart(3, '0');
+    return date.toLocaleTimeString('ja-JP', { hour12: false }) + '.' + String(date.getMilliseconds()).padStart(3, '0');
   }
 
   function displayValue(control) {
@@ -31,6 +37,11 @@
     line.textContent = now() + ' [' + caseId + '] ' + type + (detail ? ' ' + detail : '');
     logElement.prepend(line);
     while (logElement.childElementCount > MAX_LOG_LINES) logElement.lastElementChild.remove();
+    if (logCollapsed) {
+      unseenCount += 1;
+      unseenElement.textContent = '+' + unseenCount;
+      unseenElement.hidden = false;
+    }
   };
 
   function logControlEvent(event) {
@@ -58,6 +69,25 @@
     logElement.textContent = '';
   });
 
+  // Collapse / expand the log panel; the choice is remembered per browser.
+  function setLogCollapsed(collapsed) {
+    logCollapsed = collapsed;
+    logPanel.classList.toggle('collapsed', collapsed);
+    logPanel.parentElement.classList.toggle('log-collapsed', collapsed);
+    toggleLogButton.setAttribute('aria-expanded', String(!collapsed));
+    if (!collapsed) {
+      unseenCount = 0;
+      unseenElement.hidden = true;
+    }
+    try { localStorage.setItem(LOG_COLLAPSED_KEY, collapsed ? '1' : '0'); } catch (error) { /* storage unavailable */ }
+  }
+
+  toggleLogButton.addEventListener('click', function () {
+    setLogCollapsed(!logCollapsed);
+  });
+
+  try { setLogCollapsed(localStorage.getItem(LOG_COLLAPSED_KEY) === '1'); } catch (error) { /* storage unavailable */ }
+
   // Attribute list and live state under each control
   function renderMeta(control) {
     const field = control.closest('.field');
@@ -79,8 +109,8 @@
     tag.textContent = '<' + control.tagName.toLowerCase() + (attributes ? ' ' + attributes : '') + '>';
     const state = document.createElement('div');
     state.className = 'state';
-    state.innerHTML = 'Giá trị trên host: <code></code> (' + control.value.length + ' ký tự)' +
-      (validity ? ' &nbsp; Kiểm tra: <span class="' + stateClass + '"></span>' : '');
+    state.innerHTML = 'ホスト側の値: <code></code>（' + control.value.length + '文字）' +
+      (validity ? ' &nbsp; 検証: <span class="' + stateClass + '"></span>' : '');
     state.querySelector('code').textContent = displayValue(control);
     if (validity) state.querySelector('span').textContent = validity;
     meta.appendChild(tag);
@@ -98,7 +128,7 @@
   // C6: a check of the page itself (setCustomValidity on input)
   const c6 = document.getElementById('c6');
   c6.addEventListener('input', function () {
-    c6.setCustomValidity(c6.value.indexOf('NG') >= 0 ? 'Không được nhập giá trị chứa "NG" (kiểm tra riêng của trang)' : '');
+    c6.setCustomValidity(c6.value.indexOf('NG') >= 0 ? '「NG」を含む値は入力できません（ページ独自の検証）' : '');
     renderMeta(c6);
   });
 
@@ -131,23 +161,23 @@
   document.querySelectorAll('form').forEach(function (form) {
     form.addEventListener('submit', function (event) {
       event.preventDefault();
-      if (form.reportValidity()) window.writeLog('change', form.id, 'tất cả hợp lệ');
+      if (form.reportValidity()) window.writeLog('change', form.id, 'すべて有効');
     });
   });
 
   // D4: same-origin iframe (srcdoc inherits the origin of this page)
   const frame = document.getElementById('d4-frame');
   frame.srcdoc = [
-    '<!doctype html><html lang="vi"><head><meta charset="utf-8">',
+    '<!doctype html><html lang="ja"><head><meta charset="utf-8">',
     '<style>body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:18px;margin:12px}',
     'input{font-size:18px;padding:8px;width:300px;max-width:100%;box-sizing:border-box;border:1px solid #cbd2d9;border-radius:6px}',
     'input:invalid{border-color:#c62828}.state{font-size:14px;color:#616e7c;margin-top:4px}</style></head><body>',
-    '<label for="d4">Số từ 1 đến 10 (bắt buộc)</label><br>',
+    '<label for="d4">1〜10の数値（必須）</label><br>',
     '<input id="d4" type="number" min="1" max="10" required>',
     '<div class="state" id="d4-state"></div>',
     '<script>',
     'var input=document.getElementById("d4"),state=document.getElementById("d4-state");',
-    'function render(){state.textContent="Giá trị trên host: "+input.value+"  Kiểm tra: "+(input.validity.valid?"OK":"NG: "+input.validationMessage);}',
+    'function render(){state.textContent="ホスト側の値: "+input.value+"  検証: "+(input.validity.valid?"OK":"NG: "+input.validationMessage);}',
     '["input","change"].forEach(function(type){input.addEventListener(type,function(){render();',
     'parent.writeLog(type,"D4",\'value="\'+input.value+\'"\'+" "+(input.validity.valid?"OK":"NG: "+input.validationMessage));});});',
     'render();',
@@ -158,7 +188,7 @@
   function showExtensionStatus() {
     const marker = document.getElementById('co-browser-marker');
     const status = document.getElementById('extension-status');
-    status.textContent = marker ? 'Đã phát hiện (v' + (marker.getAttribute('version') || '?') + ')' : 'Không phát hiện';
+    status.textContent = marker ? '検出済み（v' + (marker.getAttribute('version') || '?') + '）' : '未検出';
   }
   showExtensionStatus();
   setTimeout(showExtensionStatus, 1000);

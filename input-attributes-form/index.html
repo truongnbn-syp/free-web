@@ -1,48 +1,48 @@
 <!doctype html>
-<html lang="vi">
+<html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Co-browsing - Kiểm tra thuộc tính input</title>
+  <title>Co-browsing - input属性の確認</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
-  <a class="back" href="../index.html">← Menu</a>
-  <h1>Co-browsing - Kiểm tra thuộc tính input (#7598 Yêu cầu chức năng 1-3)</h1>
-  <p>Mở trang này trên trình duyệt phía host và chia sẻ thao tác màn hình (画面操作共有) với tab này. Extension: <span id="extension-status">Đang kiểm tra…</span></p>
+  <a class="back" href="../index.html">← メニュー</a>
+  <h1>Co-browsing - input属性の確認（#7598 機能要件 1-3）</h1>
+  <p>このページをホスト側のブラウザで開き、このタブを画面操作共有してください。拡張機能: <span id="extension-status">確認中…</span></p>
 </header>
 
 <main>
   <div>
-    <!-- A. Loại bàn phím -->
+    <!-- A. キーボードの種類 -->
     <form id="section-a" novalidate>
       <section>
-        <h2>A. Loại bàn phím (type / inputmode / enterkeyhint)</h2>
-        <p class="note">Trên máy guest (iPhone / iPad / Android), chạm vào từng ô và kiểm tra bàn phím được hiển thị.</p>
+        <h2>A. キーボードの種類（type / inputmode / enterkeyhint）</h2>
+        <p class="note">ゲスト端末（iPhone / iPad / Android）で各項目をタップし、表示されるキーボードを確認してください。</p>
 
         <div class="field" data-case="A1">
-          <label for="a1"><span class="case">A1</span>Văn bản</label>
+          <label for="a1"><span class="case">A1</span>テキスト</label>
           <input id="a1" name="a1" type="text">
         </div>
         <div class="field" data-case="A2">
-          <label for="a2"><span class="case">A2</span>Email</label>
+          <label for="a2"><span class="case">A2</span>メールアドレス</label>
           <input id="a2" name="a2" type="email">
         </div>
         <div class="field" data-case="A3">
-          <label for="a3"><span class="case">A3</span>Số nguyên</label>
+          <label for="a3"><span class="case">A3</span>整数</label>
           <input id="a3" name="a3" type="number" min="0">
         </div>
         <div class="field" data-case="A4">
-          <label for="a4"><span class="case">A4</span>Số thập phân</label>
+          <label for="a4"><span class="case">A4</span>小数</label>
           <input id="a4" name="a4" type="number" step="0.01" min="0">
         </div>
         <div class="field" data-case="A5">
-          <label for="a5"><span class="case">A5</span>Số (cho phép số âm)</label>
+          <label for="a5"><span class="case">A5</span>数値（負数可）</label>
           <input id="a5" name="a5" type="number" min="-10" max="10">
         </div>
         <div class="field" data-case="A6-1">
-          <label for="a6-1"><span class="case">A6</span>Số điện thoại</label>
+          <label for="a6-1"><span class="case">A6</span>電話番号</label>
           <input id="a6-1" name="a6-1" type="tel">
         </div>
         <div class="field" data-case="A6-2">
@@ -50,11 +50,11 @@
           <input id="a6-2" name="a6-2" type="url">
         </div>
         <div class="field" data-case="A7">
-          <label for="a7"><span class="case">A7</span>Tìm kiếm</label>
+          <label for="a7"><span class="case">A7</span>検索</label>
           <input id="a7" name="a7" type="search">
         </div>
         <div class="field" data-case="A8">
-          <label for="a8"><span class="case">A8</span>Mật khẩu</label>
+          <label for="a8"><span class="case">A8</span>パスワード</label>
           <input id="a8" name="a8" type="password" autocomplete="off">
         </div>
         <div class="field" data-case="A9-1">
@@ -94,114 +94,114 @@
           <input id="a11-2" name="a11-2" type="text" autocapitalize="words">
         </div>
         <div class="field" data-case="A12-1">
-          <label for="a12-1"><span class="case">A12</span>Ngày (không mở ô nhập)</label>
+          <label for="a12-1"><span class="case">A12</span>日付（入力欄を開かない）</label>
           <input id="a12-1" name="a12-1" type="date">
         </div>
         <div class="field" data-case="A12-2">
-          <label><span class="case">A12</span>Checkbox / Radio</label>
+          <label><span class="case">A12</span>チェックボックス / ラジオ</label>
           <div class="choices">
-            <label><input id="a12-2" name="a12-2" type="checkbox"> Đồng ý</label>
-            <label><input id="a12-3" name="a12-3" type="radio" value="1"> Có</label>
-            <label><input id="a12-4" name="a12-3" type="radio" value="0"> Không</label>
+            <label><input id="a12-2" name="a12-2" type="checkbox"> 同意する</label>
+            <label><input id="a12-3" name="a12-3" type="radio" value="1"> はい</label>
+            <label><input id="a12-4" name="a12-3" type="radio" value="0"> いいえ</label>
           </div>
         </div>
       </section>
     </form>
 
-    <!-- B. Kiểm soát nhập phía guest -->
+    <!-- B. ゲスト側の入力制御 -->
     <form id="section-b">
       <section>
-        <h2>B. Kiểm soát nhập phía guest (maxlength / minlength / placeholder)</h2>
+        <h2>B. ゲスト側の入力制御（maxlength / minlength / placeholder）</h2>
         <div class="field" data-case="B1">
-          <label for="b1"><span class="case">B1</span>Tối đa 5 ký tự</label>
+          <label for="b1"><span class="case">B1</span>最大5文字</label>
           <input id="b1" name="b1" type="text" maxlength="5">
         </div>
         <div class="field" data-case="B2">
-          <label for="b2"><span class="case">B2/B3</span>Tối thiểu 3 ký tự</label>
+          <label for="b2"><span class="case">B2/B3</span>最小3文字</label>
           <input id="b2" name="b2" type="text" minlength="3">
         </div>
         <div class="field" data-case="B4">
-          <label for="b4"><span class="case">B4</span>Placeholder</label>
-          <input id="b4" name="b4" type="text" placeholder="VD: Nguyễn Văn A">
+          <label for="b4"><span class="case">B4</span>プレースホルダー</label>
+          <input id="b4" name="b4" type="text" placeholder="例: 山田 太郎">
         </div>
         <div class="field" data-case="B5">
-          <label for="b5"><span class="case">B5</span>Textarea (5–20 ký tự)</label>
-          <textarea id="b5" name="b5" minlength="5" maxlength="20" placeholder="Nhập yêu cầu của bạn"></textarea>
+          <label for="b5"><span class="case">B5</span>テキストエリア（5〜20文字）</label>
+          <textarea id="b5" name="b5" minlength="5" maxlength="20" placeholder="ご要望を入力してください"></textarea>
         </div>
-        <button type="submit" class="check-button">Kiểm tra trên host (tham khảo)</button>
+        <button type="submit" class="check-button">ホストで検証（参考）</button>
       </section>
     </form>
 
-    <!-- C. Kiểm tra bởi trình duyệt host -->
+    <!-- C. ホストブラウザによる検証 -->
     <form id="section-c">
       <section>
-        <h2>C. Kiểm tra bởi trình duyệt host (message hiển thị phía guest)</h2>
-        <p class="note">Khoảng 0.5–1 giây sau khi guest nhập, message của trình duyệt host phải hiển thị dưới ô nhập phía guest. Ngôn ngữ của message theo ngôn ngữ trình duyệt host.</p>
+        <h2>C. ホストブラウザによる検証（ゲスト側にメッセージ表示）</h2>
+        <p class="note">ゲストが入力してから約0.5〜1秒後に、ホストブラウザの検証メッセージがゲスト側の入力欄の下に表示されること。メッセージの言語はホストブラウザの言語に従う。</p>
         <div class="field" data-case="C1">
-          <label for="c1"><span class="case">C1</span>Bắt buộc</label>
+          <label for="c1"><span class="case">C1</span>必須</label>
           <input id="c1" name="c1" type="text" required>
         </div>
         <div class="field" data-case="C2">
-          <label for="c2"><span class="case">C2</span>3 chữ số (pattern)</label>
-          <input id="c2" name="c2" type="text" pattern="[0-9]{3}" title="3 chữ số">
+          <label for="c2"><span class="case">C2</span>数字3桁（pattern）</label>
+          <input id="c2" name="c2" type="text" pattern="[0-9]{3}" title="数字3桁">
         </div>
         <div class="field" data-case="C3">
-          <label for="c3"><span class="case">C3</span>Số từ 0 đến 100</label>
+          <label for="c3"><span class="case">C3</span>0〜100の数値</label>
           <input id="c3" name="c3" type="number" min="0" max="100">
         </div>
         <div class="field" data-case="C4">
-          <label for="c4"><span class="case">C4</span>Số theo bước 5 (step)</label>
+          <label for="c4"><span class="case">C4</span>5刻みの数値（step）</label>
           <input id="c4" name="c4" type="number" min="0" step="5">
         </div>
         <div class="field" data-case="C5">
-          <label for="c5"><span class="case">C5</span>Định dạng email</label>
+          <label for="c5"><span class="case">C5</span>メールアドレス形式</label>
           <input id="c5" name="c5" type="email">
         </div>
         <div class="field" data-case="C6">
-          <label for="c6"><span class="case">C6</span>Kiểm tra riêng của trang (chứa "NG" là lỗi)</label>
+          <label for="c6"><span class="case">C6</span>ページ独自の検証（「NG」を含むとエラー）</label>
           <input id="c6" name="c6" type="text">
         </div>
-        <button type="submit" class="check-button">Kiểm tra trên host (tham khảo)</button>
+        <button type="submit" class="check-button">ホストで検証（参考）</button>
       </section>
     </form>
 
-    <!-- D. Sự kiện trên màn hình host -->
+    <!-- D. ホスト画面のイベント -->
     <form id="section-d" novalidate>
       <section>
-        <h2>D. Sự kiện trên màn hình host (input / change / keydown / iframe)</h2>
+        <h2>D. ホスト画面のイベント（input / change / keydown / iframe）</h2>
         <div class="field" data-case="D1">
-          <label for="d1"><span class="case">D1</span>Đếm ký tự (event input)</label>
+          <label for="d1"><span class="case">D1</span>文字数カウント（inputイベント）</label>
           <input id="d1" name="d1" type="text">
-          <div class="meta">Còn lại <span id="d1-counter" class="counter">30</span> ký tự (tối đa 30, trang tự tính bằng JS)</div>
+          <div class="meta">残り <span id="d1-counter" class="counter">30</span> 文字（最大30文字、ページのJSで計算）</div>
         </div>
         <div class="field" data-case="D2">
-          <label for="d2"><span class="case">D2</span>Viết hoa khi xác nhận (event change)</label>
+          <label for="d2"><span class="case">D2</span>確定時に大文字化（changeイベント）</label>
           <input id="d2" name="d2" type="text">
-          <div class="meta">Số lần event change: <span id="d2-counter" class="counter">0</span> (không tăng khi đang gõ, chỉ tăng khi guest xác nhận)</div>
+          <div class="meta">changeイベント回数: <span id="d2-counter" class="counter">0</span>（入力中は増えず、ゲストが確定したときのみ増える）</div>
         </div>
         <div class="field" data-case="D3">
-          <label for="d3"><span class="case">D3</span>Chỉ nhập số (chặn bằng keydown)</label>
+          <label for="d3"><span class="case">D3</span>数字のみ入力（keydownで制御）</label>
           <input id="d3" name="d3" type="text">
-          <div class="meta">Bàn phím của host không gõ được ký tự khác số. Dự kiến nhập từ guest sẽ không bị chặn (thuộc phạm vi không làm được).</div>
+          <div class="meta">ホストのキーボードでは数字以外を入力できない。ゲストからの入力はブロックされない想定（対応範囲外）。</div>
         </div>
         <div class="field" data-case="D4">
-          <label><span class="case">D4</span>Ô nhập trong iframe cùng origin</label>
-          <iframe id="d4-frame" title="iframe cùng origin"></iframe>
+          <label><span class="case">D4</span>同一オリジンiframe内の入力欄</label>
+          <iframe id="d4-frame" title="同一オリジンのiframe"></iframe>
         </div>
       </section>
     </form>
 
-    <!-- E. Kiểm tra regression -->
+    <!-- E. リグレッション確認 -->
     <form id="section-e" novalidate>
       <section>
-        <h2>E. Kiểm tra regression (select)</h2>
+        <h2>E. リグレッション確認（select）</h2>
         <div class="field" data-case="E3">
-          <label for="e3"><span class="case">E3</span>Dropdown (bắt buộc)</label>
+          <label for="e3"><span class="case">E3</span>ドロップダウン（必須）</label>
           <select id="e3" name="e3" required>
-            <option value="">Vui lòng chọn</option>
-            <option value="1">Hà Nội</option>
-            <option value="2">TP. Hồ Chí Minh</option>
-            <option value="3">Đà Nẵng</option>
+            <option value="">選択してください</option>
+            <option value="1">東京</option>
+            <option value="2">大阪</option>
+            <option value="3">福岡</option>
           </select>
         </div>
       </section>
@@ -209,10 +209,18 @@
   </div>
 
   <aside>
-    <h2>Log sự kiện phía host</h2>
-    <div class="legend">input (xanh dương) / change (vàng) / keydown (đỏ) / click (xanh lá). Giá trị mật khẩu được che.</div>
-    <div id="log"></div>
-    <button id="clear-log" type="button">Xoá log</button>
+    <h2>
+      <button id="toggle-log" type="button" aria-expanded="true" aria-controls="log-body">
+        <span class="chevron" aria-hidden="true">▾</span>
+        ホスト側イベントログ
+        <span id="log-unseen" class="unseen" hidden></span>
+      </button>
+    </h2>
+    <div id="log-body">
+      <div class="legend">input（青）/ change（黄）/ keydown（赤）/ click（緑）。パスワードの値はマスク表示。</div>
+      <div id="log"></div>
+      <button id="clear-log" type="button">ログを消去</button>
+    </div>
   </aside>
 </main>
 
