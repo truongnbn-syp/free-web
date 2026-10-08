@@ -140,7 +140,7 @@
   frame.srcdoc = [
     '<!doctype html><html lang="vi"><head><meta charset="utf-8">',
     '<style>body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:18px;margin:12px}',
-    'input{font-size:18px;padding:8px;width:300px;border:1px solid #cbd2d9;border-radius:6px}',
+    'input{font-size:18px;padding:8px;width:300px;max-width:100%;box-sizing:border-box;border:1px solid #cbd2d9;border-radius:6px}',
     'input:invalid{border-color:#c62828}.state{font-size:14px;color:#616e7c;margin-top:4px}</style></head><body>',
     '<label for="d4">Số từ 1 đến 10 (bắt buộc)</label><br>',
     '<input id="d4" type="number" min="1" max="10" required>',

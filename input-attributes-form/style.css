@@ -76,6 +76,7 @@ section h2 {
 .choices label { font-weight: normal; padding: 0 16px 0 0; }
 .meta { grid-column: 2; font-size: 14px; color: var(--sub); }
 .meta code {
+  overflow-wrap: anywhere;
   font-family: Consolas, monospace;
   background: #eef2f6;
   padding: 1px 4px;
@@ -134,4 +135,38 @@ aside .legend { font-size: 13px; color: #9fb3c8; margin-bottom: 8px; }
   font-size: 14px;
   padding: 4px 12px;
   cursor: pointer;
+}
+
+/* Tablet / narrow window: one column, log docked at the bottom of the viewport */
+@media (max-width: 1024px) {
+  main {
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: 16px;
+  }
+  aside {
+    top: auto;
+    bottom: 0;
+    height: 40vh;
+    min-height: 200px;
+    margin: 0 -24px -16px;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Phone: label above the control */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  header { padding: 12px 16px; }
+  header h1 { font-size: 20px; }
+  main { padding: 12px 12px 12px; gap: 12px; }
+  section { padding: 10px 12px 12px; }
+  section h2 { font-size: 18px; }
+  .field { grid-template-columns: minmax(0, 1fr); }
+  .field label { padding-top: 0; }
+  .meta { grid-column: auto; }
+  .field input:not([type=checkbox]):not([type=radio]),
+  .field textarea,
+  .field select { max-width: none; font-size: 16px; }
+  aside { margin: 0 -12px -12px; padding: 10px 12px; }
 }
