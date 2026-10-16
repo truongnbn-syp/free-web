@@ -2,6 +2,7 @@
   // Mô phỏng luồng chống nhấn 2 lần (二重押下抑制) của hệ thống PL (paperless-dg-app-front).
   // Tham khảo: file đính kèm #4179 "二重押下抑制フロー.xlsx" (source ①〜⑤).
   const SETTINGS_KEY = 'fake-pl-shield:settings';
+  const PANEL_COLLAPSED_KEY = 'fake-pl-shield:panel-collapsed';
   const KEEPALIVE_ID = '__co-browse-keepalive';
   const MAX_LOG_LINES = 200;
   const FADE_MS = 300;
@@ -12,6 +13,9 @@
   const logElement = document.getElementById('log');
   const kanaModal = document.getElementById('kana-modal');
   const kanaInput = document.getElementById('kana-input');
+  const panelElement = document.querySelector('aside');
+  const togglePanelButton = document.getElementById('toggle-panel');
+  const unseenElement = document.getElementById('log-unseen');
 
   const options = {
     apiDelay: document.getElementById('opt-api-delay'),
@@ -26,6 +30,8 @@
   let opNo = 0;
   let table1Visible = true;
   let selectedAnswer = null;
+  let panelCollapsed = false;
+  let unseenCount = 0;
 
   function now() {
     const date = new Date();
@@ -37,6 +43,24 @@
     line.textContent = now() + ' ' + message;
     logElement.prepend(line);
     while (logElement.childElementCount > MAX_LOG_LINES) logElement.lastElementChild.remove();
+    if (panelCollapsed) {
+      unseenCount += 1;
+      unseenElement.textContent = '+' + unseenCount;
+      unseenElement.hidden = false;
+    }
+  }
+
+  // ---- Thu gọn / mở panel thiết lập & log (lưu lựa chọn theo trình duyệt) ----
+  function setPanelCollapsed(collapsed) {
+    panelCollapsed = collapsed;
+    panelElement.classList.toggle('collapsed', collapsed);
+    panelElement.parentElement.classList.toggle('panel-collapsed', collapsed);
+    togglePanelButton.setAttribute('aria-expanded', String(!collapsed));
+    if (!collapsed) {
+      unseenCount = 0;
+      unseenElement.hidden = true;
+    }
+    try { localStorage.setItem(PANEL_COLLAPSED_KEY, collapsed ? '1' : '0'); } catch (e) { /* không dùng được storage */ }
   }
 
   // ---- Thiết lập ----
@@ -340,6 +364,8 @@
     });
   }
   document.getElementById('clear-log').addEventListener('click', () => { logElement.textContent = ''; });
+  togglePanelButton.addEventListener('click', () => setPanelCollapsed(!panelCollapsed));
+  try { setPanelCollapsed(localStorage.getItem(PANEL_COLLAPSED_KEY) === '1'); } catch (e) { /* không dùng được storage */ }
 
   buildKanaKeys();
   applyKeepAlive();

@@ -13,40 +13,53 @@
   <p>Host share tab này (share màn hình thường hoặc 画面操作共有). Sau khi nhấn button, kiểm tra màn hình guest có bị đứng ở shield không.</p>
 </header>
 
-<!-- Thiết lập test. Không đặt phần tử thay đổi liên tục (đồng hồ...) trên trang, vì sẽ làm lỗi không tái hiện. -->
-<details id="settings">
-  <summary>Thiết lập test & log</summary>
-  <div class="settings-body">
-    <label>Thời gian phản hồi API (ms)
-      <input id="opt-api-delay" type="number" min="0" step="100" value="800">
-    </label>
-    <label>Số dòng dữ liệu ở màn hình mới
-      <input id="opt-rows" type="number" min="0" step="50" value="300">
-    </label>
-    <label>Chiếm main thread sau khi vẽ (ms)
-      <input id="opt-block" type="number" min="0" step="50" value="0">
-    </label>
-    <label class="check">
-      <input id="opt-api-shield" type="checkbox" checked>
-      Gọi API trước khi chuyển màn hình (shield lần 1)
-    </label>
-    <label>Đối sách A: keep-alive
-      <select id="opt-keepalive">
-        <option value="off">Không dùng</option>
-        <option value="proposal">Code đề xuất (1px, z-index:-1, opacity 0.01↔0.02, 2s)</option>
-        <option value="front">Bản phía trước (1px, z-index lớn nhất, opacity 0.01↔0.02, 2s)</option>
-      </select>
-    </label>
-    <label class="check">
-      <input id="opt-fade" type="checkbox">
-      Đối sách B: tắt shield bằng hiệu ứng mờ dần (opacity transition 300ms)
-    </label>
-    <button id="clear-log" type="button">Xóa log</button>
-    <div id="log"></div>
-  </div>
-</details>
+<main>
+  <div id="app"></div>
 
-<main id="app"></main>
+  <!-- Thiết lập test và log. Không đặt phần tử thay đổi liên tục (đồng hồ...) trên trang, vì sẽ làm lỗi không tái hiện. -->
+  <aside>
+    <h2>
+      <button id="toggle-panel" type="button" aria-expanded="true" aria-controls="panel-body">
+        <span class="chevron" aria-hidden="true">▾</span>
+        Thiết lập test &amp; log
+        <span id="log-unseen" class="unseen" hidden></span>
+      </button>
+    </h2>
+    <div id="panel-body">
+      <div class="settings">
+        <label>Thời gian phản hồi API (ms)
+          <input id="opt-api-delay" type="number" min="0" step="100" value="800">
+        </label>
+        <label>Số dòng dữ liệu ở màn hình mới
+          <input id="opt-rows" type="number" min="0" step="50" value="300">
+        </label>
+        <label>Chiếm main thread sau khi vẽ (ms)
+          <input id="opt-block" type="number" min="0" step="50" value="0">
+        </label>
+        <label class="check">
+          <input id="opt-api-shield" type="checkbox" checked>
+          Gọi API trước khi chuyển màn hình (shield lần 1)
+        </label>
+        <label>Đối sách A: keep-alive
+          <select id="opt-keepalive">
+            <option value="off">Không dùng</option>
+            <option value="proposal">Code đề xuất (1px, z-index:-1, opacity 0.01↔0.02, 2s)</option>
+            <option value="front">Bản phía trước (1px, z-index lớn nhất, opacity 0.01↔0.02, 2s)</option>
+          </select>
+        </label>
+        <label class="check">
+          <input id="opt-fade" type="checkbox">
+          Đối sách B: tắt shield bằng hiệu ứng mờ dần (opacity transition 300ms)
+        </label>
+      </div>
+      <div class="log-head">
+        <span>Log</span>
+        <button id="clear-log" type="button">Xóa log</button>
+      </div>
+      <div id="log"></div>
+    </div>
+  </aside>
+</main>
 
 <!-- Shield giống hệ thống PL. Bật/tắt ngay lập tức bằng cách đổi class. -->
 <div id="sys_spnner" class="invisible hide" aria-hidden="true">
