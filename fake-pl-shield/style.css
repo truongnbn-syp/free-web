@@ -1,0 +1,155 @@
+:root {
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --text: #1f2933;
+  --sub: #616e7c;
+  --border: #cbd2d9;
+  --primary: #0b5cad;
+  --kampo: #1a73b8;
+  --accent: #c62828;
+  --log-bg: #102a43;
+  --log-text: #e4e7eb;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  color: var(--text);
+  background: var(--bg);
+}
+header {
+  padding: 16px 24px;
+  background: var(--primary);
+  color: #fff;
+}
+header h1 { margin: 0; font-size: 24px; }
+header p { margin: 4px 0 0; font-size: 15px; }
+header .back { color: #fff; font-size: 14px; }
+
+/* Thiết lập test */
+#settings {
+  margin: 12px 24px 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 15px;
+}
+#settings summary { padding: 8px 16px; cursor: pointer; color: var(--sub); }
+.settings-body { display: grid; gap: 8px; padding: 8px 16px 16px; }
+.settings-body label { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.settings-body input[type="number"] { width: 100px; }
+#log {
+  max-height: 200px;
+  overflow: auto;
+  padding: 8px;
+  background: var(--log-bg);
+  color: var(--log-text);
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+/* Màn hình PL */
+main {
+  max-width: 1100px;
+  margin: 12px auto;
+  padding: 24px 40px 40px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.screen-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 8px;
+}
+.screen-head h2 { margin: 0; font-size: 32px; color: var(--kampo); }
+.screen-id { font-family: Consolas, monospace; font-size: 22px; color: var(--sub); }
+/* Dấu hiệu để guest biết frame đang xem có bị cũ không */
+.op-no { font-size: 40px; font-weight: bold; color: var(--accent); }
+.question {
+  margin: 16px 0;
+  padding: 8px 16px;
+  background: #d8eef3;
+  font-weight: bold;
+  color: var(--kampo);
+}
+.choices { display: flex; gap: 16px; margin: 16px 0; }
+.buttons { display: flex; gap: 16px; justify-content: flex-end; margin-top: 24px; }
+button {
+  min-width: 140px;
+  padding: 12px 20px;
+  font-size: 18px;
+  color: var(--kampo);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+/* Giống PL: hover làm button đổi giao diện (host di chuột gây repaint) */
+button:hover { background: #e8f1fa; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); }
+button.selected { color: #fff; background: var(--kampo); }
+.table1 {
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid #9fc5e8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.table1-head { display: flex; justify-content: space-between; align-items: center; color: var(--accent); }
+table { width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 8px; }
+th, td { border: 1px solid #555; padding: 4px 8px; text-align: left; }
+th { background: #e3f0f8; width: 30%; }
+.data-rows td { font-size: 13px; }
+
+/* Shield (mô phỏng #sys_spnner của PL) */
+#sys_spnner {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(60, 60, 60, 0.45);
+  opacity: 1;
+}
+#sys_spnner.invisible { visibility: hidden; }
+#sys_spnner.hide { display: none; }
+#sys_spnner.fading { opacity: 0; transition: opacity 300ms ease-out; }
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--kampo);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Modal nhập 50 âm */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+.modal.hide { display: none; }
+.modal-content {
+  width: min(720px, 90vw);
+  padding: 16px 24px;
+  background: #fff;
+  border-radius: 8px;
+}
+.modal-content h2 { margin: 0 0 8px; color: var(--kampo); }
+#kana-input { width: 100%; padding: 8px; font-size: 20px; }
+.kana-keys { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 12px; }
+.kana-keys button { min-width: 0; padding: 8px 0; font-size: 18px; }
+
+/* Đối sách A: keyframes cho keep-alive */
+@keyframes cob-keepalive { 0% { opacity: 0.01; } 50% { opacity: 0.02; } 100% { opacity: 0.01; } }
