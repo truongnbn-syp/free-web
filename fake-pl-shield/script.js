@@ -19,12 +19,19 @@
 
   const options = {
     apiDelay: document.getElementById('opt-api-delay'),
+    routeLoad: document.getElementById('opt-route-load'),
     rows: document.getElementById('opt-rows'),
     block: document.getElementById('opt-block'),
     apiShield: document.getElementById('opt-api-shield'),
     keepalive: document.getElementById('opt-keepalive'),
     fade: document.getElementById('opt-fade'),
+    autoDelay: document.getElementById('opt-auto-delay'),
+    autoInterval: document.getElementById('opt-auto-interval'),
+    autoJitter: document.getElementById('opt-auto-jitter'),
+    autoCount: document.getElementById('opt-auto-count'),
+    autoFull: document.getElementById('opt-auto-full'),
   };
+  const autoToggleButton = document.getElementById('auto-toggle');
 
   let currentScreen = null;
   let opNo = 0;
@@ -32,6 +39,9 @@
   let selectedAnswer = null;
   let panelCollapsed = false;
   let unseenCount = 0;
+  let autoRunId = 0;
+  let autoRunning = false;
+  let autoSubStep = 0;
 
   function now() {
     const date = new Date();
@@ -167,7 +177,8 @@
   function headHtml(title, screenId) {
     return '<div class="screen-head"><h2>' + title + '</h2>' +
       '<span class="screen-id">' + screenId + '</span>' +
-      '<span class="op-no">Thao tác #' + opNo + '</span></div>';
+      '<span class="op-no">Thao tác #' + opNo + '</span>' +
+      '<span class="rendered-at">Vẽ lúc ' + now() + '</span></div>';
   }
 
   const SCREENS = {
@@ -234,8 +245,11 @@
     }
   }
 
-  function routerPush(screenId) {
+  async function routerPush(screenId) {
     const from = currentScreen;
+    // Giống vue-router: tải component của màn hình mới (lazy load) trước khi xác nhận chuyển màn hình
+    const routeLoad = numberOption(options.routeLoad);
+    if (routeLoad) await new Promise((resolve) => setTimeout(resolve, routeLoad));
     opNo++;
     history.pushState({ screen: screenId }, '', '?screen=' + screenId);
     afterEach(screenId, from);
@@ -265,7 +279,7 @@
     }
     // ⑧ Bật shield trước khi chuyển màn hình (tắt ở ⑨ afterEach)
     sieldService(true);
-    routerPush(screenId);
+    await routerPush(screenId);
   }
 
   // ---- Modal nhập 50 âm ----
@@ -322,6 +336,76 @@
     }
   });
   document.getElementById('kana-close').addEventListener('click', closeKana);
+
+  // ---- Tự chạy: lặp lại thao tác để quay video bằng chứng ----
+  // Trong lúc chờ không thay đổi gì trên trang (không đếm ngược), để không che mất lỗi.
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  // Chọn thao tác tiếp theo theo màn hình hiện tại: 103 → 104 → (Bảng 1, 50 âm) → 105 → 103
+  function nextAutoAction() {
+    if (currentScreen === 'FDGIK211103') return { label: 'Bắt đầu khai báo', run: () => transition('FDGIK211104') };
+    if (currentScreen === 'FDGIK211105') return { label: 'Hoàn tất', run: () => transition('FDGIK211103') };
+    if (options.autoFull.checked && autoSubStep < 4) {
+      const step = autoSubStep++;
+      if (step === 0 || step === 1) {
+        return { label: table1Visible ? 'Đóng [Bảng 1]' : 'Hiển thị [Bảng 1]', run: () => toggleTable1(!table1Visible) };
+      }
+      if (step === 2) return { label: 'Mở nhập 50 âm', run: openKana };
+      return { label: 'Đóng nhập 50 âm', run: closeKana };
+    }
+    autoSubStep = 0;
+    return { label: 'Tiếp theo', run: () => transition('FDGIK211105') };
+  }
+
+  function setAutoRunning(running) {
+    autoRunning = running;
+    autoToggleButton.classList.toggle('running', running);
+    autoToggleButton.textContent = running ? 'Dừng tự chạy (phím R)' : 'Bắt đầu tự chạy (phím R)';
+  }
+
+  async function startAutoRun() {
+    const runId = ++autoRunId;
+    const count = numberOption(options.autoCount);
+    const isActive = () => autoRunning && runId === autoRunId;
+    setAutoRunning(true);
+    autoSubStep = 0;
+    writeLog('Tự chạy: bắt đầu sau ' + numberOption(options.autoDelay) + 's, số lần ' + (count || 'không giới hạn'));
+    await sleep(numberOption(options.autoDelay) * 1000);
+    for (let i = 1; isActive() && (!count || i <= count); i++) {
+      const action = nextAutoAction();
+      writeLog('Tự chạy lần ' + i + ': ' + action.label);
+      await action.run();
+      const jitter = numberOption(options.autoJitter);
+      const wait = Math.max(1, numberOption(options.autoInterval) + (Math.random() * 2 - 1) * jitter);
+      await sleep(wait * 1000);
+    }
+    if (runId === autoRunId) {
+      setAutoRunning(false);
+      writeLog('Tự chạy: kết thúc');
+    }
+  }
+
+  function stopAutoRun() {
+    autoRunId++;
+    setAutoRunning(false);
+    writeLog('Tự chạy: dừng');
+  }
+
+  function toggleAutoRun() {
+    if (autoRunning) stopAutoRun();
+    else startAutoRun();
+  }
+
+  autoToggleButton.addEventListener('click', toggleAutoRun);
+  // Phím R: bắt đầu / dừng mà không cần dùng chuột
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'r' && event.key !== 'R') return;
+    if (event.ctrlKey || event.altKey || event.metaKey) return;
+    if (event.target.closest('input, select, textarea')) return;
+    toggleAutoRun();
+  });
 
   // ---- Đối sách A: keep-alive (code đề xuất ở #4179 note_1555368) ----
   function stopFrameKeepAlive() {

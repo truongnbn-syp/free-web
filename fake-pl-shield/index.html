@@ -30,6 +30,9 @@
         <label>Thời gian phản hồi API (ms)
           <input id="opt-api-delay" type="number" min="0" step="100" value="800">
         </label>
+        <label>Thời gian tải màn hình mới (ms)
+          <input id="opt-route-load" type="number" min="0" step="100" value="300">
+        </label>
         <label>Số dòng dữ liệu ở màn hình mới
           <input id="opt-rows" type="number" min="0" step="50" value="300">
         </label>
@@ -51,6 +54,29 @@
           <input id="opt-fade" type="checkbox">
           Đối sách B: tắt shield bằng hiệu ứng mờ dần (opacity transition 300ms)
         </label>
+      </div>
+      <div class="auto">
+        <div class="auto-title">Tự chạy</div>
+        <div class="auto-grid">
+          <label>Bắt đầu sau (giây)
+            <input id="opt-auto-delay" type="number" min="0" step="1" value="5">
+          </label>
+          <label>Khoảng cách thao tác (giây)
+            <input id="opt-auto-interval" type="number" min="1" step="1" value="5">
+          </label>
+          <label>Dao động ngẫu nhiên (± giây)
+            <input id="opt-auto-jitter" type="number" min="0" step="0.5" value="1">
+          </label>
+          <label>Số lần (0 = không giới hạn)
+            <input id="opt-auto-count" type="number" min="0" step="1" value="0">
+          </label>
+        </div>
+        <label class="check">
+          <input id="opt-auto-full" type="checkbox" checked>
+          Bao gồm Đóng/Hiển thị [Bảng 1] và Nhập 50 âm
+        </label>
+        <button id="auto-toggle" type="button">Bắt đầu tự chạy (phím R)</button>
+        <p class="auto-note">Trong lúc chạy, không di chuột trên tab này. Di chuột làm màn hình guest tự hồi phục.</p>
       </div>
       <div class="log-head">
         <span>Log</span>
