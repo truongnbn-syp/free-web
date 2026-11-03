@@ -8,9 +8,16 @@
 </head>
 <body>
 <header>
-  <a class="back" href="../index.html">← メニュー</a>
-  <h1>Co-browsing - input属性の確認（#7598 機能要件 1-3）</h1>
+  <div class="header-bar">
+    <a class="back" href="../index.html">← メニュー</a>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" data-lang="ja" aria-pressed="true">日本語</button>
+      <button type="button" data-lang="vi" aria-pressed="false">Tiếng Việt</button>
+    </div>
+  </div>
+  <h1>Co-browsing - input属性の確認（#7628 機能要件 1-3）</h1>
   <p>このページをホスト側のブラウザで開き、このタブを画面操作共有してください。拡張機能: <span id="extension-status">確認中…</span></p>
+  <p>各項目の <span class="case">S-xx</span> は openspec gl7628 の Scenario ID（S-7628-xx）。</p>
 </header>
 
 <main>
@@ -19,7 +26,7 @@
     <form id="section-a" novalidate>
       <section>
         <h2>A. キーボードの種類（type / inputmode / enterkeyhint）</h2>
-        <p class="note">ゲスト端末（iPhone / iPad / Android）で各項目をタップし、表示されるキーボードを確認してください。</p>
+        <p class="note">ゲスト端末（iPhone / iPad / Android）で各項目をタップし、表示されるキーボードを確認してください（S-01・S-02・S-03）。7 種（text・search・email・password・tel・url・number）以外の type は入力欄を開かない。</p>
 
         <div class="field" data-case="A1">
           <label for="a1"><span class="case">A1</span>テキスト</label>
@@ -40,6 +47,7 @@
         <div class="field" data-case="A5">
           <label for="a5"><span class="case">A5</span>数値（負数可）</label>
           <input id="a5" name="a5" type="number" min="-10" max="10">
+          <div class="meta">S-24: 「-5」の入力途中の「-」・「12-」はホスト側の値が空、ゲスト側は入力した文字列のまま（メッセージなし）。</div>
         </div>
         <div class="field" data-case="A6-1">
           <label for="a6-1"><span class="case">A6</span>電話番号</label>
@@ -93,6 +101,33 @@
           <label for="a11-2"><span class="case">A11</span>autocapitalize=words</label>
           <input id="a11-2" name="a11-2" type="text" autocapitalize="words">
         </div>
+        <div class="field" data-case="A13-1">
+          <label for="a13-1"><span class="case">A13</span>autocomplete=email（S-05）</label>
+          <input id="a13-1" name="a13-1" type="email" autocomplete="email">
+        </div>
+        <div class="field" data-case="A13-2">
+          <label for="a13-2"><span class="case">A13</span>spellcheck=false / autocorrect=off（S-05）</label>
+          <input id="a13-2" name="a13-2" type="text" spellcheck="false" autocorrect="off">
+        </div>
+        <div class="field" data-case="A13-3">
+          <label for="a13-3"><span class="case">A13</span>email + multiple（カンマ区切り可）</label>
+          <input id="a13-3" name="a13-3" type="email" multiple>
+        </div>
+        <div class="field" data-case="A13-4">
+          <label for="a13-4"><span class="case">A13</span>dir=rtl（右寄せ）</label>
+          <input id="a13-4" name="a13-4" type="text" dir="rtl">
+        </div>
+        <div class="field" data-case="A14">
+          <label for="a14"><span class="case">A14</span>反映しない属性（list / form / onchange — S-06）</label>
+          <input id="a14" name="a14" type="text" list="a14-list" form="section-e" onchange="this.dataset.inlineHandler = 'ran'">
+          <datalist id="a14-list"><option value="東京都"><option value="大阪府"><option value="福岡県"></datalist>
+          <div class="meta">ゲスト側に候補（datalist）が出ない・ホストのスクリプトはゲストで動かないこと。</div>
+        </div>
+        <div class="field" data-case="A15">
+          <label for="a15"><span class="case">A15</span>1,000 文字を超える属性値（placeholder）</label>
+          <input id="a15" name="a15" type="text">
+          <div class="meta">拡張機能は 1,000 文字超の属性値を送らないため、ゲスト側にプレースホルダーが出ないこと。</div>
+        </div>
         <div class="field" data-case="A12-1">
           <label for="a12-1"><span class="case">A12</span>日付（入力欄を開かない）</label>
           <input id="a12-1" name="a12-1" type="date">
@@ -111,10 +146,16 @@
     <!-- B. ゲスト側の入力制御 -->
     <form id="section-b">
       <section>
-        <h2>B. ゲスト側の入力制御（maxlength / minlength / placeholder）</h2>
+        <h2>B. ゲスト側の入力制御（maxlength / minlength / placeholder / textarea / 高さ）</h2>
         <div class="field" data-case="B1">
-          <label for="b1"><span class="case">B1</span>最大5文字</label>
+          <label for="b1"><span class="case">B1</span>最大5文字（S-04）</label>
           <input id="b1" name="b1" type="text" maxlength="5">
+          <div class="meta">UTF-16 で数える: 「あ」= 1、「𠮷」「😀」= 2、「👍🏻」= 4。</div>
+        </div>
+        <div class="field" data-case="B6">
+          <label for="b6"><span class="case">B6</span>現在値が maxlength 超（input・最大5文字 — S-21）</label>
+          <input id="b6" name="b6" type="text" maxlength="5">
+          <div class="meta"><button type="button" class="small-button" data-set-length="7" data-target="b6">現在値を7文字にする（スクリプト）</button> 7文字のまま表示・削除は可・増やす入力は不可・1文字選択して置き換え → 6文字。</div>
         </div>
         <div class="field" data-case="B2">
           <label for="b2"><span class="case">B2/B3</span>最小3文字</label>
@@ -128,6 +169,29 @@
           <label for="b5"><span class="case">B5</span>テキストエリア（5〜20文字）</label>
           <textarea id="b5" name="b5" minlength="5" maxlength="20" placeholder="ご要望を入力してください"></textarea>
         </div>
+        <div class="field" data-case="B7">
+          <label for="b7"><span class="case">B7</span>現在値が maxlength 超（textarea・最大5文字 — S-21）</label>
+          <textarea id="b7" name="b7" maxlength="5"></textarea>
+          <div class="meta"><button type="button" class="small-button" data-set-length="7" data-target="b7">現在値を7文字にする（スクリプト）</button></div>
+        </div>
+        <div class="field" data-case="B8">
+          <label for="b8"><span class="case">B8</span>textarea の属性（最大100文字・自動修正なし・大文字 — S-08）</label>
+          <textarea id="b8" name="b8" maxlength="100" placeholder="住所を入力してください" spellcheck="false" autocorrect="off" autocapitalize="characters"></textarea>
+          <div class="meta">Enter は改行（確定しない）。確定は入力欄の外のタップ・Esc・iOS「完了」。</div>
+        </div>
+        <div class="field" data-case="B9">
+          <label for="b9"><span class="case">B9</span>高さ 700px の textarea（最大 600 — S-11・S-40）</label>
+          <textarea id="b9" name="b9" style="height: 700px"></textarea>
+          <div class="meta"><button type="button" class="small-button" data-set-lines="40" data-target="b9">現在値を40行にする（スクリプト）</button> 入力欄内でスクロールできること。横向きでは表示領域に縮むこと。</div>
+        </div>
+        <div class="field" data-case="B10">
+          <label for="b10"><span class="case">B10</span>高さ 40px の textarea（最小 100 — S-11）</label>
+          <textarea id="b10" name="b10" style="height: 40px"></textarea>
+        </div>
+        <div class="field" data-case="B11">
+          <label for="b11"><span class="case">B11</span>高さ 64px の input（実際の高さ — S-11）</label>
+          <input id="b11" name="b11" type="text" style="height: 64px">
+        </div>
         <button type="submit" class="check-button">ホストで検証（参考）</button>
       </section>
     </form>
@@ -135,8 +199,12 @@
     <!-- C. ホストブラウザによる検証 -->
     <form id="section-c">
       <section>
-        <h2>C. ホストブラウザによる検証（ゲスト側にメッセージ表示）</h2>
-        <p class="note">ゲストが入力してから約0.5〜1秒後に、ホストブラウザの検証メッセージがゲスト側の入力欄の下に表示されること。メッセージの言語はホストブラウザの言語に従う。</p>
+        <h2>C. 入力制御を満たさない値（メッセージを表示しない — S-13）</h2>
+        <p class="note">ゲスト側・ホスト側とも econy は検証メッセージを表示しない（QA #7678）。値はそのまま共有元へ反映され、各項目の下の「検証」が NG になること。「ホストで検証（参考）」はホストのブラウザー自身の吹き出し（共有元画面の動作）。</p>
+        <div class="field" data-case="C7">
+          <label for="c7"><span class="case">C7</span>最小3文字 + 数字のみ（「ab」を入力 — S-13）</label>
+          <input id="c7" name="c7" type="text" minlength="3" pattern="[0-9]*">
+        </div>
         <div class="field" data-case="C1">
           <label for="c1"><span class="case">C1</span>必須</label>
           <input id="c1" name="c1" type="text" required>
@@ -178,6 +246,7 @@
           <label for="d2"><span class="case">D2</span>確定時に大文字化（changeイベント）</label>
           <input id="d2" name="d2" type="text">
           <div class="meta">changeイベント回数: <span id="d2-counter" class="counter">0</span>（入力中は増えず、ゲストが確定したときのみ増える）</div>
+          <div class="meta">値を変えて確定（Enter・外のタップ — S-14・S-15）、Esc・戻る・リサイズで閉じる（S-23）、iOS「完了」（S-41）→ +1。値を変えずに確定（S-22）・日本語変換中の Enter（S-16）・共有終了で閉じる（S-43）→ 増えない。入力直後の確定でも +1（S-17）。</div>
         </div>
         <div class="field" data-case="D3">
           <label for="d3"><span class="case">D3</span>数字のみ入力（keydownで制御）</label>
@@ -194,7 +263,7 @@
     <!-- E. リグレッション確認 -->
     <form id="section-e" novalidate>
       <section>
-        <h2>E. リグレッション確認（select）</h2>
+        <h2>E. リグレッション確認（select — S-09）</h2>
         <div class="field" data-case="E3">
           <label for="e3"><span class="case">E3</span>ドロップダウン（必須）</label>
           <select id="e3" name="e3" required>
@@ -206,6 +275,92 @@
         </div>
       </section>
     </form>
+
+    <!-- S. secure 指定の入力項目 -->
+    <form id="section-s" novalidate>
+      <section>
+        <h2>S. secure 指定の入力項目（別経路 — S-25～S-39・S-42）</h2>
+        <p class="note">
+          開くと読み込み中 → 現在値が表示されて入力可（S-28）。入力中はホストに反映されない（S-26）。確定するとゲスト画面全体にローディング → 1〜2秒でホストに反映（S-25・S-38）。
+          値を変えずに Enter → input のみ（change なし — S-27）。Firestore のイベントに値が無いこと（Firebase コンソール）。
+          続けて2項目を確定 → 確定順に反映（S-37）。保存中に共有終了 → 反映なし・ローディングはメッセージなしで解除（S-36）。
+        </p>
+        <div class="field" data-case="S1">
+          <label for="s1"><span class="case">S1</span>secure text</label>
+          <input id="s1" name="s1" type="text" secure value="山田 太郎">
+        </div>
+        <div class="field" data-case="S2">
+          <label for="s2"><span class="case">S2</span>secure email</label>
+          <input id="s2" name="s2" type="email" secure value="taro@example.com">
+        </div>
+        <div class="field" data-case="S3">
+          <label for="s3"><span class="case">S3</span>secure number</label>
+          <input id="s3" name="s3" type="number" secure value="123">
+        </div>
+        <div class="field" data-case="S4">
+          <label for="s4"><span class="case">S4</span>secure tel</label>
+          <input id="s4" name="s4" type="tel" secure value="090-1234-5678">
+        </div>
+        <div class="field" data-case="S5">
+          <label for="s5"><span class="case">S5</span>secure url</label>
+          <input id="s5" name="s5" type="url" secure value="https://example.com">
+        </div>
+        <div class="field" data-case="S6">
+          <label for="s6"><span class="case">S6</span>secure search</label>
+          <input id="s6" name="s6" type="search" secure value="検索語">
+        </div>
+        <div class="field" data-case="S7">
+          <label for="s7"><span class="case">S7</span>secure password</label>
+          <input id="s7" name="s7" type="password" secure value="pass1234" autocomplete="off">
+        </div>
+        <div class="field" data-case="S8">
+          <label for="s8"><span class="case">S8</span>secure 空欄（現在値が空 — S-28）</label>
+          <input id="s8" name="s8" type="text" secure>
+        </div>
+        <div class="field" data-case="S9">
+          <label for="s9"><span class="case">S9</span>secure textarea</label>
+          <textarea id="s9" name="s9" secure>東京都千代田区
+1-2-3</textarea>
+        </div>
+        <div class="field" data-case="S10">
+          <label for="s10"><span class="case">S10</span>secure・maxlength なし（10,000 文字 — S-34・S-42）</label>
+          <input id="s10" name="s10" type="text" secure>
+          <div class="meta">
+            ゲスト: G の文字列を貼り付けて確定。10,000 文字 → 反映、10,001 文字 → ローディングなしで ECN0266E。<br>
+            ホスト: <button type="button" class="small-button" data-set-length="10000" data-target="s10">現在値を10,000文字にする</button>
+            <button type="button" class="small-button" data-set-length="10001" data-target="s10">現在値を10,001文字にする</button>
+            → 10,001 文字はゲストが開くと ECN0267E。
+          </div>
+        </div>
+        <div class="field" data-case="S11">
+          <label for="s11"><span class="case">S11</span>secure select（現行どおり Firestore — S-29）</label>
+          <select id="s11" name="s11" secure>
+            <option value="">選択してください</option>
+            <option value="1">普通</option>
+            <option value="2">当座</option>
+          </select>
+        </div>
+      </section>
+    </form>
+
+    <!-- F. shadow DOM -->
+    <section>
+      <h2>F. shadow DOM 内の入力項目（S-18・S-35）</h2>
+      <p class="note">クリック応答に属性が含まれないため type のみで判定し、secure も通常の経路になる（共有元画面は secure を shadow DOM 内に置かない制約）。反映先の要素を特定できないため、値が反映されない場合がある（現行の制約）。</p>
+      <div id="f-shadow"></div>
+    </section>
+
+    <!-- G. ゲスト端末用 -->
+    <section>
+      <h2>G. ゲスト端末用: 長い文字列のコピー</h2>
+      <p class="note">このページをゲスト端末のブラウザーで直接開き（画面操作共有とは別のタブ）、コピーして S10 に貼り付ける。</p>
+      <div class="copy-buttons">
+        <button type="button" class="small-button" data-copy-length="10000">10,000 文字をコピー</button>
+        <button type="button" class="small-button" data-copy-length="10001">10,001 文字をコピー</button>
+        <span id="copy-status" class="note"></span>
+      </div>
+      <textarea id="copy-text" readonly aria-label="コピー用の文字列"></textarea>
+    </section>
   </div>
 
   <aside>
@@ -224,6 +379,7 @@
   </aside>
 </main>
 
+<script src="i18n.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
