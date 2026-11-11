@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>チャネル間連携予約</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a class="back" href="../index.html">← メニュー</a>
+  <h1>チャネル間連携予約（#7297）</h1>
+  <p>URL を入力してボタンを押すと、入力した URL を新しいタブで開きます。ホスト側でこのタブを画面操作共有し、ゲスト側から操作して確認してください。</p>
+</header>
+
+<main>
+  <section>
+    <label for="target-url">URL</label>
+    <div class="row">
+      <input id="target-url" type="url" inputmode="url" autocomplete="off" placeholder="https://example.com">
+      <button id="open-url" type="button">チャネル間連携予約</button>
+    </div>
+    <p class="note">スキーム（https:// など）を省略した場合は https:// を付けて開きます。</p>
+  </section>
+
+  <section class="log-panel">
+    <h2>ログ</h2>
+    <div class="legend">クリックの isTrusted、開いた URL、新しいタブがポップアップブロックされたかを記録します。</div>
+    <div id="log"></div>
+    <button id="clear-log" type="button">ログを消去</button>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

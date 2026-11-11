@@ -1,0 +1,97 @@
+:root {
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --text: #1f2933;
+  --sub: #616e7c;
+  --border: #cbd2d9;
+  --primary: #0b5cad;
+  --ok: #1b7f3b;
+  --ng: #c62828;
+  --log-bg: #102a43;
+  --log-text: #e4e7eb;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  color: var(--text);
+  background: var(--bg);
+}
+header {
+  padding: 16px 24px;
+  background: var(--primary);
+  color: #fff;
+}
+header h1 { margin: 0; font-size: 24px; }
+header p { margin: 4px 0 0; font-size: 15px; }
+header .back { color: #fff; font-size: 14px; }
+main {
+  max-width: 960px;
+  padding: 16px 24px 80px;
+}
+section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 20px 16px;
+  margin-bottom: 16px;
+}
+section > label { display: block; font-weight: bold; margin-bottom: 6px; }
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+#target-url {
+  flex: 1 1 320px;
+  min-width: 0;
+  font-size: 18px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+#open-url {
+  font-size: 18px;
+  padding: 8px 20px;
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+}
+.note { font-size: 14px; color: var(--sub); margin: 8px 0 0; }
+
+.log-panel {
+  background: var(--log-bg);
+  color: var(--log-text);
+  border: none;
+}
+.log-panel h2 { margin: 0 0 8px; font-size: 18px; }
+.log-panel .legend { font-size: 13px; color: #9fb3c8; margin-bottom: 8px; }
+#log {
+  height: 240px;
+  overflow-y: auto;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+#log div { border-bottom: 1px solid #243b53; padding: 2px 0; word-break: break-all; }
+#log .ok { color: #b8e994; }
+#log .ng { color: #ff9b9b; }
+#clear-log {
+  margin-top: 8px;
+  font-size: 14px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  header { padding: 12px 16px; }
+  header h1 { font-size: 20px; }
+  main { padding: 12px; }
+  section { padding: 10px 12px 12px; }
+  #target-url, #open-url { font-size: 16px; }
+  #open-url { flex: 1 1 100%; }
+}
